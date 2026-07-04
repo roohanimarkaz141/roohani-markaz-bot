@@ -32,7 +32,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ["🕋 Roohani Ilaj"],
         ["📜 Taweez"],
         ["🤲 Wazifa"],
-        ["☎️ Admin Se Rabta"],
+        ["☎️ Ham se Rabta"],
     ]
 
     await update.message.reply_text(
@@ -138,14 +138,6 @@ async def get_problem(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Agar Photo bhejna chahein to bhej dein.\n\n"
         "Ya /skip likh dein."
     )
-
-    return PHOTO
-
-
-# ==========================
-# PHOTO
-# ==========================
-async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     caption = f"""
 🆕 Nayi Request
