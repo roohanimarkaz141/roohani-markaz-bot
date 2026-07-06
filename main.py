@@ -12,302 +12,156 @@ from telegram.ext import (
     filters,
 )
 
-# ==========================
-# CONFIG
-# ==========================
-BOT_TOKEN = "YOUR_BOT_TOKEN"
+TOKEN = "APNA_BOT_TOKEN_YAHAN_DALO"
 ADMIN_ID = 5668848369
 
-# ==========================
-# STATES
-# ==========================
-MENU, NAME, MOTHER, AGE, GENDER, PROBLEM  = range(7)
+(
+    NAME,
+    AGE,
+    GENDER,
+    CITY,
+    DISEASE,
+) = range(5)
 
-# ==========================
-# START
-# ==========================
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    keyboard = [
-        ["📿 Istikhara"],
-        ["🕋 Roohani Ilaj"],
-        ["📜 Taweez"],
-        ["🤲 Wazifa"],
-        ["☎️ Ham se Rabta"],
-    ]
+    keyboard = [["🩺 Naya Mashwara"]]
 
     await update.message.reply_text(
-        "🌙 Assalamu Alaikum\n\n"
-        "Roohani Markaz me khush aamdeed.\n\n"
-        "Neeche se ek option select karein.",
+        "Assalamu Alaikum\n\n"
+        "Roohani Markaz Bot me khush aamdeed.\n"
+        "Neeche button dabayein.",
         reply_markup=ReplyKeyboardMarkup(
             keyboard,
             resize_keyboard=True,
         ),
     )
 
-    return MENU
 
-
-# ==========================
-# MENU
-# ==========================
 async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-    context.user_data["service"] = update.message.text
-
     await update.message.reply_text(
-        "Apna Poora Naam Likhiye:",
+        "Apna naam likhiye.",
         reply_markup=ReplyKeyboardRemove(),
     )
-
     return NAME
-
-
-# ==========================
-# NAME
-# ==========================
-async def get_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
+    async def get_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["name"] = update.message.text
-
-    await update.message.reply_text(
-        "Walida Ka Naam Likhiye:"
-    )
-
-    return MOTHER
-
-
-# ==========================
-# MOTHER
-# ==========================
-async def get_mother(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-    context.user_data["mother"] = update.message.text
-
-    await update.message.reply_text(
-        "Umar Likhiye:"
-    )
-
+    await update.message.reply_text("Apni umar likhiye.")
     return AGE
 
 
-# ==========================
-# AGE
-# ==========================
 async def get_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
     context.user_data["age"] = update.message.text
 
-    keyboard = [["Mard", "Aurat"]]
+    keyboard = [
+        ["Male", "Female"],
+    ]
 
     await update.message.reply_text(
-        "Gender Select Karein:",
+        "Apna gender select kijiye.",
         reply_markup=ReplyKeyboardMarkup(
             keyboard,
             resize_keyboard=True,
             one_time_keyboard=True,
         ),
     )
-
     return GENDER
 
 
-# ==========================
-# GENDER
-# ==========================
 async def get_gender(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
     context.user_data["gender"] = update.message.text
 
     await update.message.reply_text(
-        "Apna Masla Tafseel Se Likhiye:",
+        "Apna shehar likhiye.",
         reply_markup=ReplyKeyboardRemove(),
     )
+    return CITY
 
-    return PROBLEM
 
-
-# ==========================
-# PROBLEM
-# ==========================
-async def get_problem(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-    context.user_data["problem"] = update.message.text
+async def get_city(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data["city"] = update.message.text
 
     await update.message.reply_text(
-        "Agar Photo bhejna chahein to bhej dein.\n\n"
-        "Ya /skip likh dein."
+        "Apni bimari ki tafseel likhiye."
     )
+    return DISEASE
+    async def get_disease(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data["disease"] = update.message.text
 
-    caption = f"""
-🆕 Nayi Request
+    msg = f"""
+🩺 Naya Mashwara
 
-Service:
-{context.user_data['service']}
+👤 Naam: {context.user_data['name']}
+🎂 Umar: {context.user_data['age']}
+⚧ Gender: {context.user_data['gender']}
+🏙 Shehar: {context.user_data['city']}
 
-Naam:
-{context.user_data['name']}
-
-Walida:
-{context.user_data['mother']}
-
-Umar:
-{context.user_data['age']}
-
-Gender:
-{context.user_data['gender']}
-
-Masla:
-{context.user_data['problem']}
-"""
-
-    
-            ADMIN_ID,
-            file_id,
-            caption=caption,
-        )
-
-    else:
-
-        await context.bot.send_message(
-            ADMIN_ID,
-            caption,
-        )
-
-    await update.message.reply_text(
-        "✅ Aapki Request Submit Ho Gayi.\n\nIn Sha Allah Jald Rabta Kiya Jayega."
-    )
-
-    return ConversationHandler.END
-
-
-# ==========================
-# SKIP
-# ==========================
-async def skip(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-    caption = f"""
-🆕 Nayi Request
-
-Service:
-{context.user_data['service']}
-
-Naam:
-{context.user_data['name']}
-
-Walida:
-{context.user_data['mother']}
-
-Umar:
-{context.user_data['age']}
-
-Gender:
-{context.user_data['gender']}
-
-Masla:
-{context.user_data['problem']}
+📝 Bimari:
+{context.user_data['disease']}
 """
 
     await context.bot.send_message(
-        ADMIN_ID,
-        caption,
+        chat_id=ADMIN_ID,
+        text=msg,
     )
 
     await update.message.reply_text(
-        "✅ Request Submit Ho Gayi."
+        "✅ Aapki tafseel Roohani Markaz tak pahunch gayi hai.\n\nJald aapse rabta kiya jayega."
     )
 
     return ConversationHandler.END
 
 
-# ==========================
-# CANCEL
-# ==========================
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
     await update.message.reply_text(
-        "Cancelled."
+        "Process cancel kar diya gaya.",
+        reply_markup=ReplyKeyboardRemove(),
     )
-
     return ConversationHandler.END
+    def main():
 
-
-# ==========================
-# MAIN
-# ==========================
-def main():
-
-    app = Application.builder().token(BOT_TOKEN).build()
+    app = Application.builder().token(TOKEN).build()
 
     conv = ConversationHandler(
-
         entry_points=[
+            MessageHandler(
+                filters.Regex("^🩺 Naya Mashwara$"),
+                menu,
+            ),
             CommandHandler("start", start),
         ],
 
         states={
-
-            MENU: [
-                MessageHandler(
-                    filters.TEXT & ~filters.COMMAND,
-                    menu,
-                )
-            ],
-
             NAME: [
-                MessageHandler(
-                    filters.TEXT & ~filters.COMMAND,
-                    get_name,
-                )
-            ],
-
-            MOTHER: [
-                MessageHandler(
-                    filters.TEXT & ~filters.COMMAND,
-                    get_mother,
-                )
+                MessageHandler(filters.TEXT & ~filters.COMMAND, get_name)
             ],
 
             AGE: [
-                MessageHandler(
-                    filters.TEXT & ~filters.COMMAND,
-                    get_age,
-                )
+                MessageHandler(filters.TEXT & ~filters.COMMAND, get_age)
             ],
 
             GENDER: [
-                MessageHandler(
-                    filters.TEXT & ~filters.COMMAND,
-                    get_gender,
-                )
+                MessageHandler(filters.TEXT & ~filters.COMMAND, get_gender)
             ],
 
-            PROBLEM: [
-                MessageHandler(
-                    filters.TEXT & ~filters.COMMAND,
-                    get_problem,
-                )
+            CITY: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, get_city)
             ],
 
-
-                CommandHandler(
-                    "skip",
-                    skip,
-                ),
+            DISEASE: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, get_disease)
             ],
         },
 
         fallbacks=[
-            CommandHandler(
-                "cancel",
-                cancel,
-            )
+            CommandHandler("cancel", cancel)
         ],
     )
 
+    app.add_handler(CommandHandler("start", start))
     app.add_handler(conv)
 
-    print("Bot Started...")
+    print("Roohani Markaz Bot Started...")
 
     app.run_polling()
 
