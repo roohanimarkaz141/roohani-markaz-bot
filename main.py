@@ -21,7 +21,7 @@ ADMIN_ID = 5668848369
 # ==========================
 # STATES
 # ==========================
-MENU, NAME, MOTHER, AGE, GENDER, PROBLEM, PHOTO = range(7)
+MENU, NAME, MOTHER, AGE, GENDER, PROBLEM  = range(7)
 
 # ==========================
 # START
@@ -161,11 +161,7 @@ Masla:
 {context.user_data['problem']}
 """
 
-    if update.message.photo:
-
-        file_id = update.message.photo[-1].file_id
-
-        await context.bot.send_photo(
+    
             ADMIN_ID,
             file_id,
             caption=caption,
@@ -293,12 +289,6 @@ def main():
                 )
             ],
 
-            PHOTO: [
-
-                MessageHandler(
-                    filters.PHOTO,
-                    photo,
-                ),
 
                 CommandHandler(
                     "skip",
